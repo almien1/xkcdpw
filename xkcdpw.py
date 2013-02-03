@@ -14,7 +14,9 @@ import random
 import re
 
 # apt-get install wbritish
-def randomWords(num, dictionary="/usr/share/dict/british-english"):
+DEFAULT_DICT = "/usr/share/dict/british-english"
+
+def randomWords(num, dictionary=DEFAULT_DICT):
   r = random.SystemRandom() # i.e. preferably not pseudo-random
   f = open(dictionary, "r")
   count = 0
@@ -31,8 +33,18 @@ def randomWords(num, dictionary="/usr/share/dict/british-english"):
         count += 1
   return(chosen)
 
-def genPassword(num=4):
+def genPassword(num=4, dictionary=DEFAULT_DICT):
   return(" ".join(randomWords(num)))
 
 if(__name__ == "__main__"):
-  print genPassword()
+  from optparse import OptionParser
+  parser = OptionParser()
+  parser.add_option("-n", "--num", action="store", type="int", default="1", help="Number of passwords to generate")
+  parser.add_option("-l", "--len", action="store", type="int", default="4", help="Length of each password, in words")
+  parser.add_option("-d", "--dict", action="store", type="string", default=DEFAULT_DICT, help="Dictionary to use as word list")
+  (options, args) = parser.parse_args()
+
+  words = randomWords(options.num * options.len, options.dict)
+  for i in range(options.num):
+    print " ".join([words.pop() for j in range(options.len)])
+
