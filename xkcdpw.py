@@ -13,8 +13,7 @@
 import random
 import re
 
-# apt-get install wbritish
-DEFAULT_DICT = "/usr/share/dict/british-english"
+DEFAULT_DICT = "/usr/share/dict/words"
 
 def randomWords(num, dictionary=DEFAULT_DICT):
   r = random.SystemRandom() # i.e. preferably not pseudo-random
@@ -23,7 +22,7 @@ def randomWords(num, dictionary=DEFAULT_DICT):
   chosen = []
   for i in range(num):
     chosen.append("")
-  prog = re.compile("^[a-z]{5,9}$") # reasonable length, no proper nouns
+  prog = re.compile("^[a-z]{5,9}$") # reasonable length, no proper nouns or difficult-to-type characters
   if(f):
     for word in f:
       if(prog.match(word)):
